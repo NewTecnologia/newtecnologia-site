@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NewTecnologia | Loja Oficial</title>
+    <!-- Incluindo Tailwind CSS para estilização -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Ícones para selos de confiança e redes sociais -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d0d0d;
+            color: #f0f0f0;
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .product-card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            cursor: pointer;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+        }
+        .payment-button {
+            transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+        .payment-button:hover {
+            transform: scale(1.02);
+        }
+        @media (min-width: 768px) {
+            .product-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        .hidden-section {
+            display: none;
+        }
+        /* Animação para a notificação de vendas */
+        .sale-notification {
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+            transform: translateX(-100%);
+        }
+        .sale-notification.hidden {
+            opacity: 0;
+            transform: translateX(-150%);
+        }
+        .sale-notification.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="p-4 flex flex-col min-h-screen">
+
+    <div class="container mx-auto flex-grow">
+        <!-- Seção de Cabeçalho - Visível em todas as telas -->
+        <header class="text-center px-4 py-8">
+            <div class="mb-6">
+                <!-- Substitua o 'src' abaixo pela URL da sua logo ou foto de perfil. -->
+                <img src="https://placehold.co/200x200/292929/e0e0e0?text=Logo"
+                     alt="Logo NewTecnologia"
+                     class="w-32 h-32 rounded-full mx-auto border border-gray-600 shadow-md">
+            </div>
+            <h1 class="text-3xl font-bold mb-2 text-white">NewTecnologia</h1>
+            <p class="text-gray-400 text-lg mb-8">
+                Soluções Tecnológicas Inovadoras | O futuro está em suas mãos.
+            </p>
+        </header>
+
+        <!-- Seção de Selos de Confiança -->
+        <div class="flex justify-center space-x-8 mb-12 text-center text-gray-400">
+            <div class="flex flex-col items-center">
+                <i class="fas fa-lock text-2xl mb-2 text-green-500"></i>
+                <p class="text-sm">Compra Segura</p>
+            </div>
+            <div class="flex flex-col items-center">
+                <i class="fas fa-truck-fast text-2xl mb-2 text-blue-500"></i>
+                <p class="text-sm">Entrega Rápida</p>
+            </div>
+            <div class="flex flex-col items-center">
+                <i class="fas fa-headset text-2xl mb-2 text-purple-500"></i>
+                <p class="text-sm">Suporte 24/7</p>
+            </div>
+        </div>
+
+        <!-- Seção de Listagem de Produtos -->
+        <div id="product-list-section">
+            <div class="product-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Card do Fone Max Premium -->
+                <div class="product-card block rounded-xl p-6 bg-gray-800 border border-gray-700 shadow-lg relative" data-product-id="fone-max">
+                    <!-- Tag para indicar que é um item popular -->
+                    <span class="absolute top-2 right-2 bg-purple-600 text-white text-xs font-bold px-2 py-1 rounded-full uppercase tracking-wider">Mais Vendido</span>
+                    <img src="https://static.k-tuin.com/media/catalog/product/cache/1/image/0dc2d03fe217f8c83829496872af24a0/a/u/auriculares-airpods-max-medianoche.jpg" alt="Fone Max Premium" class="w-full rounded-lg mb-4 object-cover">
+                    <h2 class="text-xl font-semibold text-white">Fone Max Premium</h2>
+                    <p class="text-gray-400 mt-2">R$ 599,99</p>
+                </div>
+                <!-- Card do Relógio Digital Ultra 9 -->
+                <div class="product-card block rounded-xl p-6 bg-gray-800 border border-gray-700 shadow-lg" data-product-id="relogio-ultra">
+                    <img src="https://trocafone.vtexassets.com/arquivos/ids/356763/image-9ec2c26c96ea44c08932d0008fbf31b7.jpg?v=6385457255970000" alt="Relógio Digital Ultra 9" class="w-full rounded-lg mb-4 object-cover">
+                    <h2 class="text-xl font-semibold text-white">Relógio Digital Ultra 9</h2>
+                    <p class="text-gray-400 mt-2">R$ 349,99</p>
+                </div>
+                <!-- Card do Pacote Duo -->
+                <div class="product-card block rounded-xl p-6 bg-gray-800 border border-gray-700 shadow-lg" data-product-id="pacote-duo">
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABkZTjNAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0AdHqdfwAAAUOSURBVHhe7dLBaoBAEATB8//pY2/B1K20yS56Q7s6xMNAjIgICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgACAy79/9P8f9/YwAQAAAABJRU5ErkJggg==" alt="Pacote Duo - Fone e Relógio" class="w-full rounded-lg mb-4 object-cover">
+                    <h2 class="text-xl font-semibold text-white">Pacote Duo + Brinde</h2>
+                    <!-- Gatilho de preço com o valor original riscado -->
+                    <p class="text-gray-400 mt-2"><span class="line-through text-gray-500 mr-2">R$ 1.000,00</span> R$ 899,99</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seção de Detalhes do Produto (invisível por padrão) -->
+        <div id="product-detail-section" class="hidden-section">
+            <button id="back-to-list-btn" class="mb-6 py-2 px-4 rounded-full bg-gray-700 hover:bg-gray-600 text-white transition duration-300">
+                ← Voltar para a Loja
+            </button>
+            <div class="flex flex-col md:flex-row md:space-x-8">
+                <div class="md:w-1/2">
+                    <!-- Imagem principal do produto -->
+                    <img id="product-image" src="" alt="Imagem do Produto" class="w-full rounded-lg shadow-xl">
+                </div>
+                <div class="md:w-1/2 mt-8 md:mt-0">
+                    <h2 id="product-title" class="text-3xl font-bold text-white mb-2"></h2>
+                    <p id="product-description" class="text-gray-400 text-lg mb-4"></p>
+                    <p id="product-price" class="text-2xl font-bold text-white mb-6"></p>
+                    <p id="original-price" class="text-gray-500 line-through text-lg mb-2 hidden"></p>
+                    
+                    <!-- Opções de cores -->
+                    <div class="mb-6">
+                        <label for="color-select" class="block text-white font-semibold mb-2">Cores Disponíveis:</label>
+                        <select id="color-select" class="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 text-white">
+                            <!-- Opções serão preenchidas via JavaScript -->
+                        </select>
+                    </div>
+
+                    <!-- Botão de compra -->
+                    <button id="buy-btn" class="w-full py-4 rounded-full bg-blue-600 text-white font-bold hover:bg-blue-500 transition duration-300">
+                        Comprar Agora
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seção do Checkout (invisível por padrão) -->
+        <div id="checkout-section" class="hidden-section max-w-lg mx-auto bg-gray-800 p-8 rounded-xl border border-gray-700 shadow-lg">
+            <h2 class="text-2xl font-bold text-center text-white mb-6">Informações para Entrega</h2>
+            <form id="checkout-form" class="space-y-4">
+                <div>
+                    <label for="nome" class="block text-gray-400 font-semibold mb-1">Nome Completo</label>
+                    <input type="text" id="nome" name="nome" class="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 text-white" required>
+                </div>
+                <div>
+                    <label for="email" class="block text-gray-400 font-semibold mb-1">E-mail</label>
+                    <input type="email" id="email" name="email" class="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 text-white" required>
+                </div>
+                <div>
+                    <label for="cpf" class="block text-gray-400 font-semibold mb-1">CPF</label>
+                    <input type="text" id="cpf" name="cpf" class="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 text-white" required>
+                </div>
+                <div>
+                    <label for="cep" class="block text-gray-400 font-semibold mb-1">CEP</label>
+                    <input type="text" id="cep" name="cep" class="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 text-white" required>
+                </div>
+                <div>
+                    <label for="endereco" class="block text-gray-400 font-semibold mb-1">Endereço</label>
+                    <input type="text" id="endereco" name="endereco" class="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 text-white" required>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="numero" class="block text-gray-400 font-semibold mb-1">Número</label>
+                        <input type="text" id="numero" name="numero" class="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 text-white" required>
+                    </div>
+                    <div>
+                        <label for="complemento" class="block text-gray-400 font-semibold mb-1">Complemento</label>
+                        <input type="text" id="complemento" name="complemento" class="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 text-white">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="cidade" class="block text-gray-400 font-semibold mb-1">Cidade</label>
+                        <input type="text" id="cidade" name="cidade" class="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 text-white" required>
+                    </div>
+                    <div>
+                        <label for="estado" class="block text-gray-400 font-semibold mb-1">Estado</label>
+                        <input type="text" id="estado" name="estado" class="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 text-white" required>
+                    </div>
+                </div>
+
+                <!-- Botões de pagamento -->
+                <div class="pt-6 space-y-4">
+                    <a id="checkout-payment-btn" class="payment-button w-full py-4 rounded-full bg-purple-600 text-white font-bold hover:bg-purple-500 text-center">
+                        Finalizar Compra
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Seção de Depoimentos -->
+        <div class="my-12 px-4">
+            <h3 class="text-3xl font-bold text-center mb-8 text-white">O que nossos clientes dizem</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Depoimento 1 -->
+                <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow-lg">
+                    <p class="text-gray-300 italic mb-4">"O Fone Max Premium é incrível! O som é de altíssima qualidade e o cancelamento de ruído é perfeito para o meu dia a dia. Chegou super rápido e o suporte foi excelente."</p>
+                    <p class="text-sm font-semibold text-white">- Ana Carolina, São Paulo/SP</p>
+                </div>
+                <!-- Depoimento 2 -->
+                <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow-lg">
+                    <p class="text-gray-300 italic mb-4">"Comprei o Pacote Duo e não me arrependo! O relógio e o fone são maravilhosos. Agora posso treinar ouvindo música e monitorando minha saúde. Recomendo a NewTecnologia para todos!"</p>
+                    <p class="text-sm font-semibold text-white">- João Pedro, Curitiba/PR</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Notificação de Venda - Invisível por padrão -->
+    <div id="sale-notification" class="fixed bottom-24 left-6 z-50 bg-gray-900 text-white p-4 rounded-xl border border-gray-700 shadow-2xl sale-notification hidden">
+        <!-- O conteúdo será inserido via JavaScript -->
+    </div>
+
+    <!-- Botão flutuante do WhatsApp -->
+    <a href="https://wa.me/44997097201?text=Olá!%20Tenho%20uma%20dúvida." target="_blank"
+       class="fixed bottom-6 right-6 z-50 bg-green-600 text-white p-4 rounded-full shadow-lg transition transform hover:scale-110">
+        <i class="fab fa-whatsapp text-3xl"></i>
+    </a>
+
+    <!-- Rodapé para adicionar credibilidade e mascote -->
+    <footer class="mt-12 py-8 text-center border-t border-gray-700 bg-gray-800 rounded-t-xl">
+        <div class="flex flex-col items-center mb-4">
+            <!--
+            Substitua a URL abaixo pela imagem da sua mascote.
+            O link 'href' deve ser o seu número de WhatsApp.
+            -->
+            <a href="https://wa.me/44997097201?text=Olá!%20Tenho%20uma%20dúvida." target="_blank" class="flex items-center gap-4 hover:text-green-500 transition duration-300">
+                <img src="https://placehold.co/50x50/34D399/ffffff?text=Mascote" alt="Mascote NewTecnologia" class="w-12 h-12 rounded-full mb-2">
+                <span class="text-sm font-semibold text-gray-400">Suporte ao Cliente</span>
+            </a>
+        </div>
+        <p class="text-sm text-gray-400 mb-2">NewTecnologia | Inovação em cada detalhe.</p>
+        <div class="flex justify-center space-x-4 mb-4">
+            <!-- Links de redes sociais e contato (substitua os # pelos seus links reais) -->
+            <a href="#" class="text-gray-400 hover:text-white transition duration-300 text-2xl"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white transition duration-300 text-2xl"><i class="fab fa-facebook-f"></i></a>
+            <a href="mailto:contato@newtecnologia.com" class="text-gray-400 hover:text-white transition duration-300 text-sm flex items-center">Contato</a>
+        </div>
+        <p class="text-xs text-gray-500">© 2024 NewTecnologia. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        // Objeto que armazena os dados dos produtos e seus links de pagamento
+        const products = {
+            'fone-max': {
+                title: 'Fone Max Premium',
+                description: 'Som imersivo, bloqueio de ruídos, bloqueio de som externo e design sofisticado para uma experiência de áudio sem igual.',
+                price: '599.99',
+                originalPrice: null,
+                images: {
+                    'preto': 'https://static.k-tuin.com/media/catalog/product/cache/1/image/0dc2d03fe217f8c83829496872af24a0/a/u/auriculares-airpods-max-medianoche.jpg',
+                    'vermelho': 'https://cdn.awsli.com.br/600x1000/2510/2510599/produto/216220344/apple-airpods-max-rosa-vermelho-bb79cccf.jpg',
+                    'branco': 'https://hydraulic-cdn.com/productimages/4/0/2/9/4/5/3/6/AirPods_Max_Silver_PDP_Image_Position-2__en-US.jpg_sea.jpeg'
+                },
+                colors: ['preto', 'vermelho', 'branco'],
+                paymentLink: 'https://checkout.nubank.com.br/ciZCCBpgHo7olc8'
+            },
+            'relogio-ultra': {
+                title: 'Relógio SmartUltra 9',
+                description: 'Controle total na ponta dos seus dedos com tecnologia de ponta e estilo. O Relógio SmartUltra 9 é o seu assistente pessoal e de saúde no pulso.',
+                price: '349.99',
+                originalPrice: null,
+                images: {
+                    'Preto': 'https://trocafone.vtexassets.com/arquivos/ids/356763/image-9ec2c26c96ea44c08932d0008fbf31b7.jpg?v=6385457255970000',
+                    'Dourado': 'https://placehold.co/400x400/F6E05E/000000?text=Relogio+Dourado'
+                },
+                colors: ['Preto', 'Dourado'],
+                paymentLink: 'https://checkout.nubank.com.br/CZajgSiEUW7olc8'
+            },
+            'pacote-duo': {
+                title: 'Pacote Duo: Fone Max Premium + Relógio SmartUltra 9',
+                description: 'A combinação perfeita de som e controle. Este pacote inclui o Fone Max Premium e o Relógio SmartUltra 9, para você ter a tecnologia de ponta completa na sua rotina.',
+                price: '899.99',
+                originalPrice: '1000.00',
+                images: {
+                    'Padrão': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABkZTjNAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0AdHqdfwAAAUOSURBVHhe7dLBaoBAEATB8//pY2/B1K20yS56Q7s6xMNAjIgICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgAgIiIAICIiACAiIgACAy799P8f9/YwAQAAAABJRU5ErkJggg=="
+                },
+                colors: ['Padrão'],
+                paymentLink: 'https://checkout.nubank.com.br/AT9HcKW5TE7olc8'
+            }
+        };
+
+        // Elementos do DOM
+        const productListSection = document.getElementById('product-list-section');
+        const productDetailSection = document.getElementById('product-detail-section');
+        const checkoutSection = document.getElementById('checkout-section');
+        const productCards = document.querySelectorAll('.product-card');
+        const backToListBtn = document.getElementById('back-to-list-btn');
+        const buyBtn = document.getElementById('buy-btn');
+        const productTitleEl = document.getElementById('product-title');
+        const productDescriptionEl = document.getElementById('product-description');
+        const productImageEl = document.getElementById('product-image');
+        const colorSelectEl = document.getElementById('color-select');
+        const productPriceEl = document.getElementById('product-price');
+        const originalPriceEl = document.getElementById('original-price');
+        const checkoutForm = document.getElementById('checkout-form');
+        const checkoutPaymentBtn = document.getElementById('checkout-payment-btn');
+
+        let selectedProductId = null;
+
+        // Função para mostrar uma seção e esconder as outras
+        function showSection(section) {
+            productListSection.classList.add('hidden-section');
+            productDetailSection.classList.add('hidden-section');
+            checkoutSection.classList.add('hidden-section');
+            
+            const notification = document.getElementById('sale-notification');
+            if(notification) notification.classList.add('hidden');
+
+            section.classList.remove('hidden-section');
+        }
+
+        // Lidar com o clique em um produto
+        productCards.forEach(card => {
+            card.addEventListener('click', () => {
+                selectedProductId = card.getAttribute('data-product-id');
+                const product = products[selectedProductId];
+                
+                // Atualiza o conteúdo da seção de detalhes
+                productTitleEl.textContent = product.title;
+                productDescriptionEl.textContent = product.description;
+                productPriceEl.textContent = `R$ ${product.price.replace('.', ',')}`;
+
+                if (product.originalPrice) {
+                    originalPriceEl.textContent = `R$ ${product.originalPrice.replace('.', ',')}`;
+                    originalPriceEl.style.display = 'block';
+                } else {
+                    originalPriceEl.style.display = 'none';
+                }
+                
+                // Preenche as opções de cores
+                colorSelectEl.innerHTML = '';
+                product.colors.forEach(color => {
+                    const option = document.createElement('option');
+                    option.value = color;
+                    option.textContent = color;
+                    colorSelectEl.appendChild(option);
+                });
+
+                // Atualiza a imagem com base na primeira cor
+                productImageEl.src = product.images[product.colors[0]];
+                
+                showSection(productDetailSection);
+            });
+        });
+
+        // Lidar com a mudança de cor
+        colorSelectEl.addEventListener('change', () => {
+            const selectedColor = colorSelectEl.value;
+            const product = products[selectedProductId];
+            productImageEl.src = product.images[selectedColor];
+        });
+
+        // Lidar com o botão de voltar
+        backToListBtn.addEventListener('click', () => {
+            showSection(productListSection);
+        });
+
+        // Lidar com o botão de comprar
+        buyBtn.addEventListener('click', () => {
+            showSection(checkoutSection);
+        });
+
+        // Lidar com o envio do formulário
+        checkoutPaymentBtn.addEventListener('click', (event) => {
+            const checkoutForm = document.getElementById('checkout-form');
+            if (checkoutForm.checkValidity()) {
+                event.preventDefault();
+                const selectedProduct = products[selectedProductId];
+                const paymentLink = selectedProduct.paymentLink;
+                if (paymentLink) {
+                    // Abre o link de pagamento em uma nova aba
+                    window.open(paymentLink, '_blank');
+                    
+                    // Redireciona a página atual para a página de agradecimento
+                    setTimeout(() => {
+                        window.location.href = 'obrigado.html';
+                    }, 1000);
+
+                } else {
+                    console.error('Link de pagamento não encontrado para este produto.');
+                }
+            } else {
+                // Se o formulário não for válido, dispara a validação nativa do HTML5
+                checkoutForm.reportValidity();
+            }
+        });
+
+        // Gerador de notificação de vendas
+        const saleNotifications = [
+            "Júlia de São Paulo comprou o Pacote Duo!",
+            "Marcos de Curitiba comprou o Fone Max Premium!",
+            "Fernanda de Belo Horizonte comprou o Relógio SmartUltra 9!",
+            "Ricardo de Porto Alegre comprou o Pacote Duo!",
+            "Mariana de Salvador comprou o Fone Max Premium!"
+        ];
+
+        let notificationIndex = 0;
+        const notificationContainer = document.createElement('div');
+        notificationContainer.id = 'sale-notification';
+        notificationContainer.className = 'fixed bottom-24 left-6 z-50 bg-gray-900 text-white p-4 rounded-xl border border-gray-700 shadow-2xl sale-notification hidden';
+        document.body.appendChild(notificationContainer);
+
+        function showNotification() {
+            const notification = document.getElementById('sale-notification');
+            if (productListSection.classList.contains('hidden-section') || !notification) {
+                return; // Não mostra notificação em outras seções
+            }
+
+            notification.textContent = saleNotifications[notificationIndex];
+            notification.classList.remove('hidden');
+            notification.classList.add('visible');
+
+            setTimeout(() => {
+                notification.classList.remove('visible');
+                notification.classList.add('hidden');
+            }, 15000); // Mostra por 15 segundos
+
+            notificationIndex = (notificationIndex + 1) % saleNotifications.length;
+        }
+
+        // Mostra a primeira notificação com um pequeno atraso e depois repete
+        setTimeout(showNotification, 5000);
+        setInterval(showNotification, 30000); // Repete a cada 30 segundos
+
+        // Oculta as seções de detalhe e checkout ao carregar a página
+        document.addEventListener('DOMContentLoaded', () => {
+            showSection(productListSection);
+        });
+    </script>
+</body>
+</html>
